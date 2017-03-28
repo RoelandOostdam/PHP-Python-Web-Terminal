@@ -25,10 +25,10 @@ include "conn.php";
     <h1 style="margin: auto;width: 500px;display: block;" id="preloader2">Connecting to python handler...</h1>
     <div id="preload">
     
-    <div id="load_tweets"> </div>
+    <div id="preloader"> </div>
   
     <br><hr style="border-color:black;width:100%;">
-   <div id="load_tweets2"> </div>
+   <div id="preloader2"> </div>
 
     <br><hr style="border-color:black;width:100%;">
 
@@ -45,7 +45,7 @@ include "conn.php";
       </form>
 
       Master handler console:<br> 
-      <textarea id="load_tweets3" style="width:100%;height:200px;" disabled="">Console listener inactive</textarea>
+      <textarea id="preloader3" style="width:100%;height:200px;" disabled="">Console listener inactive</textarea>
       <form action='python_send_master_command.php'>
         <input style='width:60%;' type='text' name='command' placeholder="command">
         <input type='submit' name='delete' value='Send Command' onclick='delete()' />
@@ -78,9 +78,9 @@ include "conn.php";
   var auto_refresh = setInterval(
   function ()
   {
-  $('#load_tweets').load('python_commander_update.php').fadeIn("slow");
-  $('#load_tweets2').load('python_commander_update2.php').fadeIn("slow");
-  $('#load_tweets3').load('python_master_console_update.php').fadeIn("slow");
+  $('#preloader').load('python_commander_update.php').fadeIn("slow");
+  $('#preloader2').load('python_commander_update2.php').fadeIn("slow");
+  $('#preloader3').load('python_master_console_update.php').fadeIn("slow");
   }, 100); 
   
 </script>
