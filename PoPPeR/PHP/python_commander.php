@@ -21,7 +21,7 @@ include "conn.php";
 
     <div style="width:80%;margin-left:150px;">
     <hr style="border-color:black;width:100%;">
-    <img style="margin: auto;width: 200px;display: block;" id="preloader1" src="/admin/images/preloader.gif">
+    <img style="margin: auto;width: 200px;display: block;" id="preloader1" src="preloader.gif">
     <h1 style="margin: auto;width: 500px;display: block;" id="preloader2">Connecting to python handler...</h1>
     <div id="preload">
     
