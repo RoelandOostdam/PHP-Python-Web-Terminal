@@ -15,8 +15,8 @@
 // $db = fread($fp, filesize('config/conn_db')-1);
 
 $ip = 'localhost';
-$user = 'root';
-$pass = '';
+$user = 'user';
+$pass = 'password';
 $db = 'python_data';
 
 try {

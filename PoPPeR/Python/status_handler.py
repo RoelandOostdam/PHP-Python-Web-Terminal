@@ -1,4 +1,10 @@
-#python process status response lib
+## @package status_handler
+## \brief All the php web-console to python functions are listed in this library
+## status_handler will enable python to php web-console (PWC) communication
+"""
+status_handler will enable python to php web-console (PWC) communication
+"""
+
 from datetime import datetime
 import MySQLdb
 import time, datetime, os, sys
@@ -7,6 +13,7 @@ import master_lib
 
 
 def update_status(process_name, process_update, process_status='no status available'):
+	"""Updates process status into db"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("UPDATE python_data SET process_update='" + process_update + "' WHERE process_name='" + process_name + "'")
@@ -17,12 +24,14 @@ def update_status(process_name, process_update, process_status='no status availa
 	# print data
 
 def init_status(process_name, process_update, process_status='no status available'):
+	"""Adds unitialized process status into db"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("INSERT INTO python_data (process_name, process_update, process_status) VALUES ('" + process_name + "','" + process_update + "','" + process_status + "')")
 	db.commit()
 
 def smart_status(process_name, process_update, process_status='no status available'):
+	"""Combined init_status & update_status"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("SELECT * FROM python_data WHERE process_name='" + process_name + "'")
@@ -33,6 +42,7 @@ def smart_status(process_name, process_update, process_status='no status availab
 		init_status(process_name, process_update, process_status)
 
 def clear_status(process_name):
+	"""Removed process status from db"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("DELETE FROM python_data WHERE process_name='" + process_name + "'")
@@ -40,6 +50,7 @@ def clear_status(process_name):
 	cursor.close()
 
 def get_status(process_name):
+	"""Retrieve process status from db"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("SELECT process_update FROM python_data WHERE process_name='" + process_name + "'")
@@ -60,10 +71,12 @@ def get_status(process_name):
 	cursor.close()
 
 def timestamp():
+	"""Retrieve current timestamp"""
 	stamp = time.strftime('%Y-%m-%d %H:%M:%S')
 	return stamp
 
 def run_test():
+	"""Test function to check if this file was imported"""
 	return 'status_handler imported'
 
 #update_status('test_process', time.strftime('%Y-%m-%d %H:%M:%S'), 'test status')

@@ -1,3 +1,10 @@
+## @package python_remote_handler
+## \brief Executed by python_master_handler to run threaded functions
+"""
+python_master_handler is the php web-console listener.
+It can start threaded remote_handlers to execute functions like auto backup_db
+"""
+
 import subprocess, time, datetime
 import MySQLdb, status_handler
 import time, datetime, os, sys, random
@@ -6,6 +13,7 @@ from master_lib import *
 process_name = 'python_remote_handler'
 
 def get_command(thread):
+	"""Retrieves command for current thread"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("SELECT process_name FROM python_remote_handler WHERE thread='" + str(thread) + "'")
@@ -18,6 +26,7 @@ def get_command(thread):
 	
 	
 def clear_commands(thread):
+	"""Clears current thread commands"""
 	db = master_lib.db_connect()
 	cursor = db.cursor()
 	cursor.execute("DELETE FROM python_remote_handler WHERE thread='" + str(thread) + "'")
@@ -25,6 +34,7 @@ def clear_commands(thread):
 	cursor.close()
 
 def start(thread):
+	"""Executes current thread command"""
 	print 'assigned thread: ' + str(thread)
 	delay = 5
 	wait = delay

@@ -1,7 +1,16 @@
+## @package threader
+## \brief Thread handler for python functions (Deprecated)
+## Thread handler for python functions (Deprecated)
+
+"""
+Thread handler for python functions (Deprecated)
+"""
+
 from threading import Thread
 from time import sleep
 
 def threaded_function(arg):
+    """Runs a dual threaded function"""
     for i in range(arg):
         print "running"
         sleep(1)

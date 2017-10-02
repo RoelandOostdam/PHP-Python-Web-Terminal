@@ -1,6 +1,7 @@
 <?php //include "includes/admin_init.php";
 //check apache version
 //$apache_version = substr(apache_get_version(), 0, strpos(apache_get_version(), "PHP"));
+session_start();
 
 //check if sql is active and check version
 //$active = @mysql_ping() ? "<h3 style='text-align:center;'>" . mysql_get_server_info() . "</h3>" : "<h3 style='text-align:center;color:red;'>Failed</h3>";
@@ -10,13 +11,18 @@ include "conn.php";
 //$active = $sth->execute();
 
 ?>
-      
+<link href="/overcast/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-
+<script src="/overcast/js/jquery.js"></script>
+<head>
+<title>Python Commander</title>
+</head>
+<body>
 <div class="container">
 <div style="margin-top:20px;">
     <div style="width:80%;margin-left:150px;">
-        <h1>Python Commander Dashboard</h1>
+        <a href='../'><button>Exit</button></a><h1 style='display:inline;' >&nbspPython Commander Dashboard</h1>
     </div>
 
     <div style="width:80%;margin-left:150px;">
@@ -27,14 +33,41 @@ include "conn.php";
     
     <div id="preloader"> </div>
   
-    <br><hr style="border-color:black;width:100%;">
+    <!-- <br><hr style="border-color:black;width:100%;"> -->
    <div id="preloader2"> </div>
 
     <br><hr style="border-color:black;width:100%;">
 
-      <form action='python_clear_processes.php'>
+      <form style="display: inline;" action='python_clear_processes.php'>
         <input type='submit' name='delete' value='clear processes' onclick='delete()' />
       </form>
+
+
+      <?php
+  include "ajax.php";
+  $sql = "SELECT response_time FROM python_config";
+  foreach ($conn->query($sql) as $row) {
+    $perf_level = $row['response_time'];
+  }
+?>
+<div style="display: inline;padding:20px;">
+  <input style="width:300px;" type="range" id="rangeInput" name="rangeInput" value="<?php echo 1050-$perf_level; ?>" step="50" min="50" max="1000">
+  <label id="rangeText" />
+</div><br><br>
+
+<script>
+  $(function ($) {
+      // on page load, set the text of the label based the value of the range
+      $('#rangeText').text('Response time (' + <?php echo $perf_level; ?> + 'ms)');
+
+      // setup an event handler to set the text when the range value is dragged (see event for input) or changed (see event for change)
+      $('#rangeInput').on('input change', function () {
+          $('#rangeText').text('Response time (' + (1050-$(this).val()) + 'ms)');
+          update_response_time(1050-$(this).val());
+      });
+
+  });
+</script>
 
       <form action='python_send_command.php'>
         Basic handler command: &nbsp
@@ -54,6 +87,26 @@ include "conn.php";
 </div>
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script type="text/javascript">
     function preload(hide=true){
     var el1 = document.getElementById('preload');
@@ -73,7 +126,7 @@ include "conn.php";
     preload(true);
     setTimeout(function(){ preload(false); }, 100);
 </script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
 <script type="text/javascript">
   var auto_refresh = setInterval(
   function ()
@@ -81,6 +134,7 @@ include "conn.php";
   $('#preloader').load('python_commander_update.php').fadeIn("slow");
   $('#preloader2').load('python_commander_update2.php').fadeIn("slow");
   $('#preloader3').load('python_master_console_update.php').fadeIn("slow");
-  }, 100); 
+  }, <?php echo $perf_level; ?>); 
   
 </script>
+</body>

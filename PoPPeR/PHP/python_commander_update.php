@@ -13,16 +13,16 @@ echo "<table style='width:100%;text-align: center;'>
         foreach ($conn->query($sql) as $row) {
         $var = strtotime($row['process_update']);
         //$var = time() - strtotime($var);
-        if((time()-(60)) < $var){
-          $response = "<div style='color:darkorange;'>Heavily Delayed (<60s)</div>";
-          if((time()-(20)) < $var){
-            $response = "<div style='color:orange;'>Delayed (<20s)</div>";
-            if((time()-(10)) < $var){
-              $response = "<div style='color:green;'>Healthy (<10s)</div>";
+        if((time()-(30)) < $var){
+          $response = "<div style='color:darkorange;'>Heavily Delayed (<30s)</div>";
+          if((time()-(10)) < $var){
+            $response = "<div style='color:orange;'>Delayed (<10s)</div>";
+            if((time()-(3)) < $var){
+              $response = "<div style='color:green;'>Healthy (<3s)</div>";
             }
           }
         } else {
-          $response = "<div style='color:red;'>OFFLINE (>60s)</div>";
+          $response = "<div style='color:red;'>OFFLINE (>30s)</div>";
         }
         echo '<tr><td>' . $row['process_name'] . '</td><td>' . $row['process_status'] . '</td><td>' . $response . '</td></tr>';
         }
