@@ -37,7 +37,9 @@ if($_GET['action']=='update_feed'){
             $interval_s = $thread_datetime->format('%s');
 
             if($thread_id==0){
-                $thread_id = "Main";
+                $thread_name = "0: Main";
+            } else {
+                $thread_name = $thread_id;
             }
 
             if($interval<=3){
@@ -49,16 +51,16 @@ if($_GET['action']=='update_feed'){
             }elseif($interval<40){
                 $class = 'Warning';
                 $interval = "Unresponsive (${interval_s}s)";
-            }elseif($interval<58){
+            }elseif($interval<59){
                 $class = 'Danger';
-                $interval = "About to be deleted (${interval_s}s)";
-            }elseif($interval>=58){
+                $interval = "About to expire (${interval_s}s)";
+            }elseif($interval>=59){
                 $sql = "DELETE FROM terminal_threads WHERE thread=".$thread_id;
                 mysqli_query($con,$sql);
                 exit;
             }
 
-            print "<tr class='$class'><td>$thread_id</td><td>$interval</td><td>$thread_status</td></tr>";
+            print "<tr class='$class'><td>$thread_name</td><td>$interval</td><td>$thread_status</td></tr>";
         }
     }
 }
