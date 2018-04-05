@@ -52,12 +52,12 @@ def addFeed(thread_id=0,feed='Empty feed'):
 	cur.execute("INSERT INTO terminal_feed ("+thread_id+", "+feed+") VALUES ()")
 	db.commit()
 
-def sendUpdate(thread=0):
+def sendUpdate(thread=0,response='Response'):
 	global db,cur
 	print 'Sending ping'
 	cur.execute("SELECT * FROM terminal_threads WHERE thread=0")
 	if(cur.rowcount!=0):
-		cur.execute("UPDATE terminal_threads SET status = 'response', status_datetime='DATETIME()' WHERE thread=0")
+		cur.execute("UPDATE terminal_threads SET status = '"+response+"', status_datetime=CURRENT_TIMESTAMP() WHERE thread=0")
 		db.commit()
 	else:
 		cur.execute("INSERT INTO terminal_threads (thread, status) VALUES (0,'response')")

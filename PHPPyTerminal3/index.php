@@ -24,7 +24,7 @@
                   <tr>
                     <th>Thread</th>
                     <th>Update</th>
-                    <th>Status</th>
+                    <th>Message</th>
                   </tr>
                 </thead>
                 <tbody id="status">

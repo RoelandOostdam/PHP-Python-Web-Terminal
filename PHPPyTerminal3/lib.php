@@ -27,15 +27,38 @@ if($_GET['action']=='update_feed'){
     $result = mysqli_query($con,"INSERT INTO terminal_feed (thread_id, feed) VALUES (0, '$command')");
     header('location: index.php');
 } elseif($_GET['action']=='refresh_threads'){
-    $sql = "SELECT * FROM terminal_threads ORDER BY status_datetime ASC";
+    $sql = "SELECT * FROM terminal_threads ORDER BY status_datetime DESC";
     if ($result=mysqli_query($con,$sql)){
         while ($row=mysqli_fetch_row($result)){
             $thread_id = $row[1];
             $thread_status = $row[2];
-            $interval = date_diff(date_create($row[3]), date_create(Date('Y-m-d H:i:s.u')));
-            $thread_datetime = $interval->format('%i:%S');
+            $thread_datetime = date_diff(date_create($row[3]), date_create(Date('Y-m-d H:i:s')));
+            $interval = $thread_datetime->format('%i%s');
+            $interval_s = $thread_datetime->format('%s');
 
-            print "<tr class='success'><td>$thread_id</td><td>$thread_datetime</td><td>$thread_status</td></tr>";
+            if($thread_id==0){
+                $thread_id = "Main";
+            }
+
+            if($interval<=3){
+                $class = 'Success';
+                $interval = "Realtime (${interval_s}s)";
+            }elseif($interval<=10){
+                $class = 'Warning';
+                $interval = "Delayed (${interval_s}s)";
+            }elseif($interval<40){
+                $class = 'Warning';
+                $interval = "Unresponsive (${interval_s}s)";
+            }elseif($interval<58){
+                $class = 'Danger';
+                $interval = "About to be deleted (${interval_s}s)";
+            }elseif($interval>=58){
+                $sql = "DELETE FROM terminal_threads WHERE thread=".$thread_id;
+                mysqli_query($con,$sql);
+                exit;
+            }
+
+            print "<tr class='$class'><td>$thread_id</td><td>$interval</td><td>$thread_status</td></tr>";
         }
     }
 }
