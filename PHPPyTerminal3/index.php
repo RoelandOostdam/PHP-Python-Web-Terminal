@@ -9,10 +9,12 @@
     <div class="row">
         <div class="col-md-8">
             <div class="form-group">
-                <textarea disabled="" class="form-control" rows="10" id="comment"></textarea>
+                <textarea id="terminal" disabled="" class="form-control" rows="10" id="comment"></textarea>
             </div>
-            <form action='python_send_master_command.php'>
+            <form action='lib.php' method="GET">
+                <input hidden name="action" value="send_command">
                 <input class="form-control" type='text' name='command' placeholder="Input">
+                <input hidden type="submit">
             </form>
         </div>
         
@@ -25,14 +27,20 @@
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>    
-                  <tr class="success">
-                    <td>1</td>
-                    <td>00:55</td>
-                    <td>Running function()</td>
-                  </tr>
+                <tbody id="status">
                 </tbody>
               </table>
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#terminal').load('lib.php?action=update_feed');
+    var auto_refresh = setInterval(
+    function (){
+        $('#terminal').load('lib.php?action=update_feed');
+        $('#status').load('lib.php?action=refresh_threads');
+    }, 500); 
+  
+</script>

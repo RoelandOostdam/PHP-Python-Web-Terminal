@@ -2,8 +2,6 @@ from lib import *
 
 connect('localhost','oemraw','Ramdew123Curry')
 
-waitForInput()
-
-#print retrieveAll('*')
+waitForInput(1000)
 
 close()
