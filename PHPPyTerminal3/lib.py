@@ -31,16 +31,16 @@ def waitForInput(interval):
 			record_datetime = record[2]
 			record_feed = record[3]
 
-			if record_datetime > datetime.datetime.now()-datetime.timedelta(seconds=interval+interval*0.5):
+			if record_datetime > datetime.datetime.now()-datetime.timedelta(seconds=interval+interval):
 				#print "found: "+str(record_feed)[:7]
 				if(record_feed[:8]=='##input:'):
 					command = record_feed[8:]
 					print 'Executing: '+ command
 					try:
-						eval(command)()
+						eval(command)
 					except Exception as e:
 						print 'Error in function: '+str(e)
-						addFeed(0,'Error in function: '+str(e))
+						addFeed('Error in function: '+str(e),0)
 		time.sleep(interval)
 
 def retrieveAll(selection):
@@ -49,15 +49,15 @@ def retrieveAll(selection):
 	for row in cur.fetchall():
 		return row
 
-def addFeed(thread_id=0,feed='Empty feed'):
+def addFeed(feed='Empty feed',thread_id=0,):
 	global db,cur
 	try:
 		cur.execute("INSERT INTO terminal_feed (thread_id, feed) VALUES ('"+str(thread_id)+"', '"+str(feed)+"')")
 	except Exception as e:
-		cur.execute("INSERT INTO terminal_feed (thread_id, feed) VALUES ('0','An SQL error occured')")
+		cur.execute("INSERT INTO terminal_feed (thread_id, feed) VALUES ('0','Input error')")
 	db.commit()
 
-def sendUpdate(thread=0,response='Response'):
+def sendUpdate(response='Response',thread=0,):
 	global db,cur
 	print 'Sending ping'
 	cur.execute("SELECT * FROM terminal_threads WHERE thread=0")
@@ -75,4 +75,4 @@ def cls():
 
 def test():
 	global db,cur
-	addFeed(0,'test')
+	addFeed('test',0)

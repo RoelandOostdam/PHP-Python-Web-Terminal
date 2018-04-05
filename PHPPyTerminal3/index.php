@@ -13,7 +13,7 @@
             </div>
             <form action='lib.php' method="GET">
                 <input hidden name="action" value="send_command">
-                <input class="form-control" type='text' name='command' placeholder="Input">
+                <input class="form-control" type='text' name='command' placeholder="Input" autofocus>
                 <input hidden type="submit">
             </form>
         </div>
@@ -23,7 +23,7 @@
                 <thead>
                   <tr>
                     <th>Thread</th>
-                    <th>Update</th>
+                    <th>Ping</th>
                     <th>Message</th>
                   </tr>
                 </thead>
@@ -37,6 +37,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
 <script type="text/javascript">
     $('#terminal').load('lib.php?action=update_feed');
+    $('#status').load('lib.php?action=refresh_threads');
     var auto_refresh = setInterval(
     function (){
         $('#terminal').load('lib.php?action=update_feed');
