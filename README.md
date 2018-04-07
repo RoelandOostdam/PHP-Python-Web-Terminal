@@ -1,52 +1,18 @@
-## PoPPeR - PHP to Python Protocol
-<br><p align="center"><img src="https://www.dropbox.com/s/t8qqhsiwlbiee13/popper.PNG?dl=1"></p>
-<br>
-
-
+##PHP/Python Web Terminal - A threaded PHP to Python Protocol
 Requirements:<br>
--Python MySQLDB
+-<a href='https://pypi.python.org/pypi/MySQL-python/1.2.5'>Python MySQLDB</a>
 
 ## Installation
 Import python_data.sql as database<br>
-Change database configuration in /Python/master_lib.py
-```python
-def db_connect():
-	global ip, user, password, dbn, db
-	ip = "localhost"
-	user = "root"
-	password = ""
-	dbn = "python_data"
-
-	return MySQLdb.connect(ip,user,password,dbn)
-```
-Change database configuration in /PHP/conn.py
-```php
-$ip = 'localhost';
-$user = 'root';
-$pass = '';
-$db = 'python_data';
-```
-If you want to load configuration from files
-```php
-$fp = fopen('config/conn_ip', 'r');
-$ip = fread($fp, filesize('config/conn_ip'));
-
-$fp = fopen('config/conn_user', 'r');
-$user = fread($fp, filesize('config/conn_user'));
-
-$fp = fopen('config/conn_pass', 'r');
-$pass = fread($fp, filesize('config/conn_pass'));
-
-$fp = fopen('config/conn_db', 'r');
-$db = fread($fp, filesize('config/conn_db')-1);
-```
+Change database configuration in /Python/config.cfg
+Change database configuration in /PHP/config.cfg
 
 ## Usage
-<strong>Commands located in master_lib.py</strong><br>
-cls() - clears console<br>
-version() - displays master_lib version<br>
-threader(file) - starts threaded script<br>
-handle() - starts threaded handler<br>
-execute(command, arg1, arg2, arg3) - executes python command e.g. print<br>
+<strong>System commands stored in core.py</strong><br>
+cls() - Clears console<br>
+flush() - Flushes all threads used to remove unresponsive threads<br>
+cflush() - Does the above commands
 <br>
-<strong>Execute python_master_handler.py on server to start the listener</strong><br>
+<strong>Execute terminal.py on server to start the listener</strong><br>
+
+<img src="https://www.dropbox.com/s/szoad2j3bkrj63z/terminal.PNG?dl=1">
