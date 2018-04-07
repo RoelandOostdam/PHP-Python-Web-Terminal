@@ -6,16 +6,23 @@ import custom_lib
 #Core functions
 core_fncs = ['cls','flush','cflush']
 
+def init(host,user,passwd,p_interval,p_queue_limit):
+	global p_host, p_user, p_passwd, interval, queue_limit
+	p_host = host
+	p_user = user
+	p_passwd = passwd
+	interval = int(p_interval)
+	queue_limit = int(p_queue_limit)
+
+	connect(host,user,passwd)
+	waitForInput()
+
 def connect(host,user,passwd):
-	global phost, puser, ppasswd
-	phost = host
-	puser = user
-	ppasswd = passwd
 	global db,cur
 	db = MySQLdb.connect(
-		host=host,
-		user=user,
-		passwd=passwd,
+		host=p_host,
+		user=p_user,
+		passwd=p_passwd,
 		db="terminal_data")
 	cur = db.cursor()
 	#print 'Connected to db'
@@ -26,13 +33,11 @@ def close():
 def reconnect():
 	try:
 		db.close()
-		connect(phost,puser,ppasswd)
+		connect(p_host,p_user,p_passwd)
 	except:
 		pass
 
-def waitForInput(interval):
-	queue_limit = 5
-	interval = interval/1000.0
+def waitForInput():
 	commands = []
 	while True:
 		reconnect()
@@ -55,7 +60,7 @@ def waitForInput(interval):
 					if(record_feed[:8]=='##input:'):
 						command = record_feed[8:]
 						if(record_id not in commands):
-							#print 'Executing: '+ command
+							print 'Executing: '+ command
 							try:
 								commands.append(record_id)
 								if(command in core_fncs):

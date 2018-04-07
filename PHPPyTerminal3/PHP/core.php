@@ -1,5 +1,6 @@
 <?php
-$con = mysqli_connect("localhost","oemraw","Ramdew123Curry","terminal_data");
+session_start();
+$con = mysqli_connect($_SESSION['host'],$_SESSION['user'],$_SESSION['passwd'],"terminal_data");
 if (mysqli_connect_errno()){
     print "Failed to connect to MySQL: " . mysqli_connect_error();
 }

@@ -1,3 +1,13 @@
+<?php
+session_start();
+$lines = file('config.cfg');
+$_SESSION['host'] = rtrim(substr($lines[0], strpos($lines[0], "=") + 1));
+$_SESSION['user'] = rtrim(substr($lines[1], strpos($lines[1], "=") + 1));
+$_SESSION['passwd'] = rtrim(substr($lines[2], strpos($lines[2], "=") + 1));
+$_SESSION['client_refresh'] = substr($lines[3], strpos($lines[3], "=") + 1);
+
+?>
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <head>
     <title>PHP/Python Web Terminal</title>
@@ -47,6 +57,6 @@
         $('#status').load('core.php?action=refresh_threads');
         var textarea = document.getElementById('terminal');
         textarea.scrollTop = textarea.scrollHeight;
-    }, 500); 
+    }, <?php echo $_SESSION['client_refresh'] ?>); 
   
 </script>
