@@ -4,7 +4,7 @@
 </head>
 <body>
 <div style="margin-top:20px;width:80%" class="container">
-    <h1 style="color:#2c3e50">&nbspPython Commander Dashboard</h1>
+    <h1 style="color:#2c3e50">&nbspPHP/Python Web Terminal</h1>
     <hr>
     <div class="row">
         <div class="col-md-8">

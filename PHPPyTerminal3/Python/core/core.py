@@ -6,8 +6,6 @@ import custom_lib
 #Core functions
 core_fncs = ['cls','flush','cflush']
 
-global db,cur
-
 def connect(host,user,passwd):
 	global phost, puser, ppasswd
 	phost = host
@@ -20,7 +18,7 @@ def connect(host,user,passwd):
 		passwd=passwd,
 		db="terminal_data")
 	cur = db.cursor()
-	print 'Connected to db'
+	#print 'Connected to db'
 
 def close():
 	db.close()
@@ -47,7 +45,6 @@ def waitForInput(interval):
 
 		if(cur.rowcount!=0):
 			for record in cur.fetchall():
-				#record = cur.fetchall()[0]
 				record_id = record[0]
 				record_thread = record[1]
 				record_datetime = record[2]
@@ -58,24 +55,27 @@ def waitForInput(interval):
 					if(record_feed[:8]=='##input:'):
 						command = record_feed[8:]
 						if(record_id not in commands):
-							print 'Executing: '+ command
+							#print 'Executing: '+ command
 							try:
 								commands.append(record_id)
 								if(command in core_fncs):
 									eval(command)()
 								else:
-									cur.execute("SELECT MAX(thread) FROM terminal_threads")
-									thread_assign = int(cur.fetchall()[0][0])+1
-									print 'Assigning thread: '+str(thread_assign)+' running command: '+str(command)
-									thread = Thread(target = custom_lib.execute, args = (command,thread_assign))
-									thread.start()
-									#thread.join()
-									#custom_lib.execute(command)
+									if '(' in command:
+										cur.execute("SELECT MAX(thread) FROM terminal_threads")
+										thread_assign = int(cur.fetchall()[0][0])+1
+										print 'Assigning thread: '+str(thread_assign)+' running command: '+str(command)
+										thread = Thread(target = custom_lib.execute, args = (command,thread_assign))
+										thread.start()
+										#thread.join()
+										#custom_lib.execute(command)
+									else:
+										addFeed(command+' is not a function. Call a function with ()')
 							except Exception as e:
 								print 'Error in function: '+str(e)
-								addFeed('Error in function: '+str(e),0)
+								addFeed('Error in function: '+str(e))
 							print 'Next in queue'
-							time.sleep(1)
+							time.sleep(0.5)
 						else:
 							pass
 		time.sleep(interval)
@@ -91,7 +91,6 @@ def addFeed(feed='Empty feed',thread_id=0):
 		except Exception as e:
 			print 'MySQL could not queue command (#1002): '+str(e)
 	
-
 def sendUpdate(response='Response',thread_id=0):
 	print("Ping " + time.strftime("%H:%M:%S", time.gmtime()))
 	try:
@@ -116,7 +115,6 @@ def completeTask(thread_id=0):
 		db.commit()
 	except Exception as e:
 			print 'MySQL could not queue command (#1004): '+str(e)
-	
 
 def cls():
 	cur.execute("TRUNCATE TABLE terminal_feed")
