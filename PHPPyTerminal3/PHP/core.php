@@ -27,7 +27,7 @@ if($_GET['action']=='update_feed'){
     $result = mysqli_query($con,"INSERT INTO terminal_feed (thread_id, feed) VALUES (0, '$command')");
     header('location: index.php');
 } elseif($_GET['action']=='refresh_threads'){
-    $sql = "SELECT * FROM terminal_threads ORDER BY status_datetime DESC";
+    $sql = "SELECT * FROM terminal_threads ORDER BY thread ASC";
     if ($result=mysqli_query($con,$sql)){
         while ($row=mysqli_fetch_row($result)){
             $thread_id = $row[1];
@@ -41,23 +41,28 @@ if($_GET['action']=='update_feed'){
             } else {
                 $thread_name = $thread_id;
             }
-
-            if($interval<=3){
-                $class = 'Success';
-                $interval = "Realtime (${interval_s}s)";
-            }elseif($interval<=10){
-                $class = 'Warning';
-                $interval = "Delayed (${interval_s}s)";
-            }elseif($interval<40){
-                $class = 'Warning';
-                $interval = "Unresponsive (${interval_s}s)";
-            }elseif($interval<59){
-                $class = 'Danger';
-                $interval = "About to expire (${interval_s}s)";
-            }elseif($interval>=59){
-                $sql = "DELETE FROM terminal_threads WHERE thread=".$thread_id;
-                mysqli_query($con,$sql);
-                exit;
+            if(substr($thread_status, 0, 4)=='##c:'){
+                $class = 'Info';
+                $interval = "n/a";
+                $thread_status = substr($thread_status, 4);
+            } else {
+                if($interval<=3){
+                    $class = 'Success';
+                    $interval = "Realtime (${interval_s}s)";
+                }elseif($interval<=10){
+                    $class = 'Warning';
+                    $interval = "Delayed (${interval_s}s)";
+                }elseif($interval<40){
+                    $class = 'Warning';
+                    $interval = "Unresponsive (${interval_s}s)";
+                }elseif($interval<59){
+                    $class = 'Danger';
+                    $interval = "About to expire (${interval_s}s)";
+                }elseif($interval>=59){
+                    $sql = "DELETE FROM terminal_threads WHERE thread=".$thread_id;
+                    mysqli_query($con,$sql);
+                    exit;
+                }
             }
 
             print "<tr class='$class'><td>$thread_name</td><td>$interval</td><td>$thread_status</td></tr>";
