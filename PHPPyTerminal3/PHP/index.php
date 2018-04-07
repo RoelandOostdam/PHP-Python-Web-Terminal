@@ -9,9 +9,9 @@
     <div class="row">
         <div class="col-md-8">
             <div class="form-group">
-                <textarea id="terminal" disabled="" class="form-control" rows="10" id="comment"></textarea>
+                <textarea id="terminal" disabled="" class="form-control" rows="20" id="comment"></textarea>
             </div>
-            <form action='lib.php' method="GET">
+            <form action='core.php' method="GET">
                 <input hidden name="action" value="send_command">
                 <input class="form-control" type='text' name='command' placeholder="Input" autofocus>
                 <input hidden type="submit">
@@ -36,12 +36,17 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.3.0/jquery.min.js"></script>
 <script type="text/javascript">
-    $('#terminal').load('lib.php?action=update_feed');
-    $('#status').load('lib.php?action=refresh_threads');
+    $('#terminal').load('core.php?action=update_feed');
+    $('#status').load('core.php?action=refresh_threads');
+    var textarea = document.getElementById('terminal');
+    textarea.scrollTop = textarea.scrollHeight;
+    
     var auto_refresh = setInterval(
     function (){
-        $('#terminal').load('lib.php?action=update_feed');
-        $('#status').load('lib.php?action=refresh_threads');
+        $('#terminal').load('core.php?action=update_feed');
+        $('#status').load('core.php?action=refresh_threads');
+        var textarea = document.getElementById('terminal');
+        textarea.scrollTop = textarea.scrollHeight;
     }, 500); 
   
 </script>

@@ -1,4 +1,5 @@
-from lib import *
+from core.custom_lib import *
+from core.core import *
 
 connect('localhost','oemraw','Ramdew123Curry')
 
