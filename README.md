@@ -6,9 +6,9 @@ Requirements:<br>
 -<a href='https://pypi.python.org/pypi/MySQL-python/1.2.5'>Python MySQLDB</a>
 
 ## Installation
-Import python_data.sql as database<br>
-Change database configuration in /Python/config.cfg
-Change database configuration in /PHP/config.cfg
+-Import database from SQL/terminal_data.sql<br>
+-Change database configuration in /Python/config.cfg<br>
+-Change database configuration in /PHP/config.cfg<br>
 
 ## Usage
 <strong>System commands stored in core.py</strong><br>
