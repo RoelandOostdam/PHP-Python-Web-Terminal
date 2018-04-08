@@ -7,18 +7,17 @@ from threading import Thread
 def execute(command,pthread):
 	global thread
 	thread = pthread
+	print (str(thread)+": Executing: "+str(command),thread)
 	core.sendUpdate(str(thread)+": Executing: "+str(command),thread)
 	try:
-		command = command.replace('&quot;',"'")
 		eval(command)
 	except Exception as e:
-		print "Thread error: "+str(e)
+		print ("Thread "+str(thread)+' encountered an error: '+str(e),thread)
 		core.addFeed("Thread "+str(thread)+' encountered an error: '+str(e),thread)
 
 	thread = Thread(target = core.completeTask, args = (pthread,))
 	thread.start()
 	#thread.join()
-
 #-------------------------------------------------------------------------------------#
 #Core response functions:
 #-------------------------------------------------------------------------------------#
@@ -27,13 +26,13 @@ def execute(command,pthread):
 # Use global var 'thread' when creating an update or feed
 #-------------------------------------------------------------------------------------#
 #Put your custom user libary functions here
-import time, subprocess
+import time
 #-------------------------------------------------------------------------------------#
-#example function that directly executes a python command
-def pyExec(command,args=''):
+#example function that directly executes a python command and returns its true output
+def pyExec(command):
 	try:
-		output = subprocess.check_output([command, args])
-		if(output!=None):
+		output = eval(command)
+		if(output==None):
 			output = 'Empty response'
 		print 'Output = '+str(output)
 		core.addFeed(str(output),thread)

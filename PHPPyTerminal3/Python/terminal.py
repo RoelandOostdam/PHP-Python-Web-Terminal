@@ -12,5 +12,5 @@ try:
 except Exception as e:
 	print 'Error reading config: '+str(e)
 
-init(host,user,passwd,1,queue_limit)
+init(host,user,passwd,(int(interval)/1000.0),queue_limit)
 close()

@@ -40,7 +40,7 @@ def reconnect():
 def waitForInput():
 	commands = []
 	while True:
-		#reconnect()
+		reconnect()
 		sendUpdate()
 		try:
 			cur.execute("SELECT * FROM terminal_feed ORDER BY datetime DESC LIMIT "+str(queue_limit))
@@ -60,7 +60,7 @@ def waitForInput():
 					if(record_feed[:8]=='##input:'):
 						command = record_feed[8:]
 						if(record_id not in commands):
-							print 'Executing: '+ command
+							#print 'Executing: '+ command
 							try:
 								commands.append(record_id)
 								if(command in core_fncs):
@@ -69,6 +69,7 @@ def waitForInput():
 									if '(' in command:
 										cur.execute("SELECT MAX(thread) FROM terminal_threads")
 										thread_assign = int(cur.fetchall()[0][0])+1
+										command = command.replace('&quot;',"'")
 										print 'Assigning thread: '+str(thread_assign)+' running command: '+str(command)
 										thread = Thread(target = custom_lib.execute, args = (command,thread_assign))
 										thread.start()
@@ -79,7 +80,7 @@ def waitForInput():
 							except Exception as e:
 								print 'Error in function: '+str(e)
 								addFeed('Error in function: '+str(e))
-							print 'Next in queue'
+							#print 'Next in queue'
 							time.sleep(0.5)
 						else:
 							pass
@@ -101,13 +102,14 @@ def sendUpdate(response='Response',thread_id=0):
 	try:
 		cur.execute("SELECT * FROM terminal_threads WHERE thread="+str(thread_id))
 		if(cur.rowcount!=0):
-			cur.execute("UPDATE terminal_threads SET status = '"+str(response)+"', status_datetime=CURRENT_TIMESTAMP() WHERE thread="+str(thread_id))
+			cur.execute("UPDATE terminal_threads SET status = \""+str(response)+"\", status_datetime=CURRENT_TIMESTAMP() WHERE thread="+str(thread_id))
 			db.commit()
 		else:
-			cur.execute("INSERT INTO terminal_threads (thread, status) VALUES ("+str(thread_id)+",'"+str(response)+"')")
+			cur.execute("INSERT INTO terminal_threads (thread, status) VALUES ("+str(thread_id)+",\""+str(response)+"\")")
 			db.commit()
 	except Exception as e:
-		print "UPDATE terminal_threads SET status = '"+str(response)+"', status_datetime=CURRENT_TIMESTAMP() WHERE thread="+str(thread_id)
+		print "UPDATE terminal_threads SET status = \""+str(response)+"\", status_datetime=CURRENT_TIMESTAMP() WHERE thread="+str(thread_id)
+		print "INSERT INTO terminal_threads (thread, status) VALUES ("+str(thread_id)+",\""+str(response)+"\")"
 		print 'MySQL could not queue command (#1003): '+str(e)
 
 def completeTask(thread_id=0):
