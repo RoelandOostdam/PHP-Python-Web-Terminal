@@ -32,7 +32,7 @@ core.sendUpdate(response='Response',thread=0)
 <br>
 <strong>Use global var 'thread' when creating an update or feed</strong>
 <br>
-Example function (also included in the base file):
+Example function (also included in the base file):<br>
 ```
 import time
 
