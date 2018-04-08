@@ -32,11 +32,24 @@ core.sendUpdate(response='Response',thread=0)
 ```
 <strong>Use global var 'thread' when creating an update or feed</strong>
 <br>
-Example function (also included in the base file):<br>
+Example functions (also included in the base file):<br>
 ```
-import time
-def test():
-	core.addFeed('test',thread)
+import time, subprocess
+#-------------------------------------------------------------------------------------#
+#example function that directly executes a python command
+def pyExec(command,args=''):
+	try:
+		output = subprocess.check_output([command, args])
+		if(output!=None):
+			output = 'Empty response'
+		print 'Output = '+str(output)
+		core.addFeed(str(output),thread)
+	except Exception as e:
+		core.addFeed('Error in thread '+str(thread)+' executing '+command+': '+str(e),thread)
+		
+#example function that returns a feed
+def test(text='test'): 
+	core.addFeed(str(text),thread)
 	time.sleep(5)
 ```
 <br>
