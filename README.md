@@ -25,17 +25,15 @@ To send a new feed to the terminal<br>
 ```
 core.addFeed(feed='Empty feed',thread_id=0)
 ```
-Sends a new update status/ping to the thread<br>
+To send a new update status/ping to the thread. Note that unresponsive threads will be hidden from the client after 60 seconds (the function will not be terminated)<br>
 ```
 core.sendUpdate(response='Response',thread=0)
 ```
-<br>
 <strong>Use global var 'thread' when creating an update or feed</strong>
 <br>
 Example function (also included in the base file):<br>
 ```
 import time
-
 def test():
 	core.addFeed('test',thread)
 	time.sleep(5)
