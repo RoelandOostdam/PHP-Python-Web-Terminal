@@ -23,17 +23,17 @@ To run your own functions you need to add then to the core/custom_lib.py file<br
 The engine makes use of 2 functions to send information and pings to the PHP client.
 
 To send a new feed to the terminal<br>
-```
+```python
 core.addFeed(feed='Empty feed',thread_id=0)
 ```
 To send a new update status/ping to the thread. Note that unresponsive threads will be hidden from the client after 60 seconds (the function will not be terminated)<br>
-```
+```python
 core.sendUpdate(response='Response',thread=0)
 ```
 <strong>Use global var 'thread' when creating an update or feed</strong>
 <br>
 Example functions (also included in the base file):<br>
-```
+```python
 import time, subprocess
 #-------------------------------------------------------------------------------------#
 #example function that directly executes a python command
