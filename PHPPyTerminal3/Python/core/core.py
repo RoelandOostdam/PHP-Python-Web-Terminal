@@ -40,7 +40,7 @@ def reconnect():
 def waitForInput():
 	commands = []
 	while True:
-		reconnect()
+		#reconnect()
 		sendUpdate()
 		try:
 			cur.execute("SELECT * FROM terminal_feed ORDER BY datetime DESC LIMIT "+str(queue_limit))
