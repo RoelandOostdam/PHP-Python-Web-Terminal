@@ -23,21 +23,38 @@ To run your own functions you need to add then to the core/custom_lib.py file<br
 The engine makes use of 2 functions to send information and pings to the PHP client.
 
 To send a new feed to the terminal<br>
-```
+```python
 core.addFeed(feed='Empty feed',thread_id=0)
 ```
 To send a new update status/ping to the thread. Note that unresponsive threads will be hidden from the client after 60 seconds (the function will not be terminated)<br>
-```
+```python
 core.sendUpdate(response='Response',thread=0)
 ```
 <strong>Use global var 'thread' when creating an update or feed</strong>
 <br>
-Example function (also included in the base file):<br>
-```
+Example functions (also included in the base file):<br>
+```python
 import time
-def test():
-	core.addFeed('test',thread)
+#-------------------------------------------------------------------------------------#
+#example function that directly executes a python command and returns its true output
+def pyExec(command):
+	try:
+		output = eval(command)
+		if(output==None):
+			output = 'Empty response'
+		print 'Output = '+str(output)
+		core.addFeed(str(output),thread)
+	except Exception as e:
+		core.addFeed('Error in thread '+str(thread)+' executing '+command+': '+str(e),thread)
+#example function that returns a feed
+def test(text='test'): 
+	core.addFeed(str(text),thread)
 	time.sleep(5)
 ```
-<br>
+The above function can be executed in the terminal by using:
+```python
+pyExec(test("the answer is: "+str(10/2)))
+#returns 'the answer is: 5'
+```
+<strong>Make sure to use double quotes to call a function</strong><br>
 After a function was completed the handler will return an completed status for 5 seconds before removing the thread
