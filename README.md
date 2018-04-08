@@ -52,5 +52,9 @@ def test(text='test'):
 	core.addFeed(str(text),thread)
 	time.sleep(5)
 ```
-<br>
+The above function can be executed in the terminal by using:
+```python
+pyExec(test("this is a test"))
+```
+<strong>Make sure to use double quotes to call a function</strong><br>
 After a function was completed the handler will return an completed status for 5 seconds before removing the thread
