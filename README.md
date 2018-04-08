@@ -3,6 +3,7 @@
 ![alt text](https://preview.ibb.co/i6V0HH/terminal.png)
 
 Requirements:<br>
+-<a href='https://www.python.org/downloads/'>Python 2.7</a><br>
 -<a href='https://pypi.python.org/pypi/MySQL-python/1.2.5'>Python MySQLDB</a>
 
 ## Installation
