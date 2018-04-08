@@ -25,6 +25,8 @@ if($_GET['action']=='update_feed'){
     mysqli_close($con);
 } elseif($_GET['action']=='send_command'){
     $command = "##input:".$_GET['command'];
+    $command = htmlspecialchars($command, ENT_QUOTES);
+
     $result = mysqli_query($con,"INSERT INTO terminal_feed (thread_id, feed) VALUES (0, '$command')");
     header('location: index.php');
 } elseif($_GET['action']=='refresh_threads'){

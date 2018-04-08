@@ -107,10 +107,8 @@ def sendUpdate(response='Response',thread_id=0):
 			cur.execute("INSERT INTO terminal_threads (thread, status) VALUES ("+str(thread_id)+",'"+str(response)+"')")
 			db.commit()
 	except Exception as e:
-		try:
-			cur.execute("INSERT INTO terminal_feed (thread_id, feed) VALUES ('0','MySQL could not queue command')")
-		except Exception as e:
-			print 'MySQL could not queue command (#1003): '+str(e)
+		print "UPDATE terminal_threads SET status = '"+str(response)+"', status_datetime=CURRENT_TIMESTAMP() WHERE thread="+str(thread_id)
+		print 'MySQL could not queue command (#1003): '+str(e)
 
 def completeTask(thread_id=0):
 	sendUpdate('##c:Task completed',thread_id)

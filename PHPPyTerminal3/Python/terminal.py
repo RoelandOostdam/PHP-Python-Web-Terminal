@@ -13,5 +13,4 @@ except Exception as e:
 	print 'Error reading config: '+str(e)
 
 init(host,user,passwd,1,queue_limit)
-
-#close()
+close()
