@@ -34,19 +34,18 @@ core.sendUpdate(response='Response',thread=0)
 <br>
 Example functions (also included in the base file):<br>
 ```python
-import time, subprocess
+import time
 #-------------------------------------------------------------------------------------#
-#example function that directly executes a python command
-def pyExec(command,args=''):
+#example function that directly executes a python command and returns its true output
+def pyExec(command):
 	try:
-		output = subprocess.check_output([command, args])
-		if(output!=None):
+		output = eval(command)
+		if(output==None):
 			output = 'Empty response'
 		print 'Output = '+str(output)
 		core.addFeed(str(output),thread)
 	except Exception as e:
 		core.addFeed('Error in thread '+str(thread)+' executing '+command+': '+str(e),thread)
-		
 #example function that returns a feed
 def test(text='test'): 
 	core.addFeed(str(text),thread)
@@ -54,7 +53,8 @@ def test(text='test'):
 ```
 The above function can be executed in the terminal by using:
 ```python
-pyExec(test("this is a test"))
+pyExec(test("the answer is: "+str(10/2)))
+#returns 'the answer is: 5'
 ```
 <strong>Make sure to use double quotes to call a function</strong><br>
 After a function was completed the handler will return an completed status for 5 seconds before removing the thread
